@@ -6,42 +6,35 @@ namespace GaussSeidelMethod
     {
         static void Main(string[] args)
         {
+            Console.WriteLine("----------------------------------");
             Console.WriteLine("Gauss-Seidel Iteration Method");
             Console.WriteLine("----------------------------------\n");
 
+            double[,] augMatrix = new double[3, 4];
+
+
+
             //for x1
-            Console.Write("Input a11: ");
-            double a11 = Convert.ToDouble(Console.ReadLine());
-            Console.Write("Input a12: ");
-            double a12 = Convert.ToDouble(Console.ReadLine());
-            Console.Write("Input a13: ");
-            double a13 = Convert.ToDouble(Console.ReadLine());
-            Console.Write("Input b1: ");
-            double b1 = Convert.ToDouble(Console.ReadLine());
-            Console.WriteLine(" ");
+            for (int row = 0; row < augMatrix.GetLength(0); row++)
+            {
+                for (int col = 0; col < augMatrix.GetLength(1); col++)
+                {
+                    if (col == 3)
+                    {
+                        Console.Write($"Input b{row + 1}: ");
+                        augMatrix[row, col] = Convert.ToDouble(Console.ReadLine());
+                    }
+                    else
+                    {
+                        Console.Write($"Input a{row + 1}{col + 1}: ");
+                        augMatrix[row, col] = Convert.ToDouble(Console.ReadLine());
+                    }
+                    
+                }
 
-
-            //for x2
-            Console.Write("Input a21: ");
-            double a21 = Convert.ToDouble(Console.ReadLine());
-            Console.Write("Input a22: ");
-            double a22 = Convert.ToDouble(Console.ReadLine());
-            Console.Write("Input a23: ");
-            double a23 = Convert.ToDouble(Console.ReadLine());
-            Console.Write("Input b2: ");
-            double b2 = Convert.ToDouble(Console.ReadLine());
-            Console.WriteLine(" ");
-
-            //for x3
-            Console.Write("Input a31: ");
-            double a31 = Convert.ToDouble(Console.ReadLine());
-            Console.Write("Input a32: ");
-            double a32 = Convert.ToDouble(Console.ReadLine());
-            Console.Write("Input a33: ");
-            double a33 = Convert.ToDouble(Console.ReadLine());
-            Console.Write("Input b3: ");
-            double b3 = Convert.ToDouble(Console.ReadLine());
-            Console.WriteLine(" ");
+                Console.WriteLine();
+                Console.Clear();
+            }
 
             //first iteration value
             double x1old = 0;
@@ -50,27 +43,28 @@ namespace GaussSeidelMethod
             int iteration = 1;
 
             //check if valid
-            if ((Math.Abs(a11) > (Math.Abs(a12) + Math.Abs(a13))) && (Math.Abs(a22) > (Math.Abs(a21) + Math.Abs(a23))) && (Math.Abs(a33) > (Math.Abs(a31) + Math.Abs(a32))))
+            
+            if ((Math.Abs(augMatrix[0, 0]) > (Math.Abs(augMatrix[0, 1]) + Math.Abs(augMatrix[0, 2]))) 
+                && (Math.Abs(augMatrix[1, 1]) > (Math.Abs(augMatrix[1, 0]) + Math.Abs(augMatrix[1, 2]))) 
+                && (Math.Abs(augMatrix[2, 2]) > (Math.Abs(augMatrix[2, 0]) + Math.Abs(augMatrix[2, 1]))))
             {
                 Console.WriteLine("\nValid for Gauss-Seidel Method!\n\n");
                 Console.WriteLine("Iteration Open! Start!\n\n");
             }
-            else
-                throw new Exception("Invalid for Gauss-Seidel Method!");
+            else throw new Exception("Invalid for Gauss-Seidel Method!");
 
             //Iteration Open! Start!
             while (true)
             {
                 Console.WriteLine($"Iteration no. {iteration}");
-                double x1new = Math.Round((1 / a11) * (b1 - (a12 * x2old) - (a13 * x3old)), 3, MidpointRounding.AwayFromZero);
-                double x2new = Math.Round((1 / a22) * (b2 - (a21 * x1new) - (a23 * x3old)), 3, MidpointRounding.AwayFromZero);
-                double x3new = Math.Round((1 / a33) * (b3 - (a31 * x1new) - (a32 * x2new)), 3, MidpointRounding.AwayFromZero);
+                double x1new = Math.Round((1 / augMatrix[0, 0]) * (augMatrix[0, 3] - (augMatrix[0, 1] * x2old) - (augMatrix[0, 2] * x3old)), 3, MidpointRounding.AwayFromZero);
+                double x2new = Math.Round((1 / augMatrix[1, 1]) * (augMatrix[1, 3] - (augMatrix[1, 0] * x1new) - (augMatrix[1, 2] * x3old)), 3, MidpointRounding.AwayFromZero);
+                double x3new = Math.Round((1 / augMatrix[2, 2]) * (augMatrix[2, 3] - (augMatrix[2, 0] * x1new) - (augMatrix[2, 1] * x2new)), 3, MidpointRounding.AwayFromZero);
 
                 Console.WriteLine($"x1 = {x1new}, x2 = {x2new}, x3 = {x3new}\n\n");
 
                 //if last iteration and latest iteration is the same, stop loop
-                if ((x1old == x1new) && (x2old == x2new) && (x3old == x3new))
-                    break;
+                if ((x1old == x1new) && (x2old == x2new) && (x3old == x3new)) break;
                 //else assign new values to old values
                 else
                 {
