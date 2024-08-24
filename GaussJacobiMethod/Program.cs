@@ -111,7 +111,7 @@ namespace GaussSeidelMethod
             DisplayAugArray();
             Console.WriteLine("Calculates x1, x2, and x3 using the iterative method, rather than the\nelimination method.\n");
             Console.WriteLine("IMPORTANT: Must be a diagonally dominant matrix in order to converge to the\ntrue value.\n");
-            Console.WriteLine("You can also specify the number of decimal places, e.g. 0 for whole number, 3\nfor three decimal places, or 255 for no rounding.");
+            Console.WriteLine("You can also specify the number of decimal places, e.g. 0 for whole number, 1-15\nfor 1-15 decimal places, or 255 for no rounding.");
 
             Console.WriteLine(new string('-', CHAR_LENGTH));
 
@@ -121,6 +121,8 @@ namespace GaussSeidelMethod
             {
                 Console.Write("\nSpecify the number of decimal places: ");
                 rounding = Convert.ToByte(Console.ReadLine());
+
+                if (rounding > 15 && rounding != 255) throw new ArgumentOutOfRangeException();
             }
             catch (FormatException fe)
             {
@@ -131,6 +133,12 @@ namespace GaussSeidelMethod
             catch (OverflowException oe)
             {
                 Console.WriteLine($"\nOutside of the allowable range! {oe.Message}");
+                ClearContinue();
+                Main();
+            }
+            catch (ArgumentOutOfRangeException aoore)
+            {
+                Console.WriteLine($"\nOutside of the allowable range! {aoore.Message}");
                 ClearContinue();
                 Main();
             }
