@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ConsoleTables;
+using System;
 using System.Text;
 
 namespace GaussSeidelMethod
@@ -95,6 +96,8 @@ namespace GaussSeidelMethod
         //    return Math.Round(number, numPlaces, MidpointRounding.AwayFromZero);
         //}
 
+
+
         static void Main()
         {
             double[,] augMatrix = new double[3, 4];
@@ -117,12 +120,12 @@ namespace GaussSeidelMethod
                     {
                         if (col == (augMatrix.GetLength(1) - 1))
                         {
-                            Console.Write($"Input b{row + 1}: ");
+                            Console.Write($"Input b{row + 1}:\t");
                             augMatrix[row, col] = Convert.ToDouble(Console.ReadLine());
                         }
                         else
                         {
-                            Console.Write($"Input a{row + 1}{col + 1}: ");
+                            Console.Write($"Input a{row + 1}{col + 1}:\t");
                             augMatrix[row, col] = Convert.ToDouble(Console.ReadLine());
                         }
                     }
@@ -171,18 +174,18 @@ namespace GaussSeidelMethod
                 
 
             
-
-
             //Iteration Open! Start!
             TitleScreen("Iteration Open! Start!");
+
+            ConsoleTable table = new ConsoleTable("Iteration No.", "x1", "x2", "x3");
+
             while (true)
             {
-                Console.WriteLine($"Iteration no. {iteration}");
                 newValues[0] = Math.Round((1 / augMatrix[0, 0]) * (augMatrix[0, 3] - (augMatrix[0, 1] * oldValues[1]) - (augMatrix[0, 2] * oldValues[2])), 3, MidpointRounding.AwayFromZero);
                 newValues[1] = Math.Round((1 / augMatrix[1, 1]) * (augMatrix[1, 3] - (augMatrix[1, 0] * newValues[0]) - (augMatrix[1, 2] * oldValues[2])), 3, MidpointRounding.AwayFromZero);
                 newValues[2] = Math.Round((1 / augMatrix[2, 2]) * (augMatrix[2, 3] - (augMatrix[2, 0] * newValues[0]) - (augMatrix[2, 1] * newValues[1])), 3, MidpointRounding.AwayFromZero);
 
-                Console.WriteLine($"x1 = {newValues[0]}, x2 = {newValues[1]}, x3 = {newValues[2]}\n\n");
+                table.AddRow(iteration, newValues[0], newValues[1], newValues[2]);
 
                 //if last iteration and latest iteration is the same, stop loop
                 if ((oldValues[0] == newValues[0]) && (oldValues[1] == newValues[1]) && (oldValues[2] == newValues[2])) break;
@@ -197,7 +200,9 @@ namespace GaussSeidelMethod
                 iteration++;
             }
 
-            Console.WriteLine($"\nThe iteration stopped at {iteration}.");
+            Console.WriteLine(table.ToMinimalString());
+
+            Attention($"The iteration stopped at {iteration}.");
             Console.ReadLine();
         }
     }
