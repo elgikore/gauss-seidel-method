@@ -15,9 +15,12 @@ For a 3x3 augmented matrix, where the coefficients ($a$'s) of the 3x3 matrix are
 ![lagrida_latex_editor](https://github.com/user-attachments/assets/1dff7121-d6ba-4562-8ed1-2062048f2f72)
 
 Where:
-* $a_{ij}$ = Coefficients ($a_{11}, a_{12},$ etc.)
-* $b_i$ = Resultant vector's ($B$) coefficients ($b_1, b_2,$ etc.)
-* $k$ - Iteration №
+* $a_{ij}$ = Coefficients ($a_{11}, a_{12},$ etc.).
+* $b_i$ = Resultant vector's ($B$) coefficients ($b_1, b_2,$ etc.).
+* $k$ - Iteration №.
+  * The 0th iteration of each $x$'s are usually set to 0 or an arbitrary value.
+ 
+The loop stops once the previous iteration's ($k-1$) $x$ values is the same as the newly evaluated current iteration's ($k$) $x$ values.
 
 A 3x3 matrix is said to be (strictly) diagonally dominant if it satisfies all three of these conditions:<br><br>
 ![lagrida_latex_editor (1)](https://github.com/user-attachments/assets/4aae35eb-9312-4168-bfc0-afa846e098dd)
