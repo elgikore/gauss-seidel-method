@@ -31,7 +31,7 @@ namespace GaussSeidelMethod
             Console.WriteLine($"{repeatedChar}\n");
         }
 
-        private static void clearContinue()
+        private static void ClearContinue()
         {
             Console.Write("Press ENTER to continue. ");
             Console.ReadKey();
@@ -71,7 +71,7 @@ namespace GaussSeidelMethod
         }
 
         //NOTE: Uses strictly diagonal dominance when checking
-        private static bool isDiagonallyDominant(double[,] array)
+        private static bool IsDiagonallyDominant(double[,] array)
         {
             double nonDiagSum = 0;
 
@@ -131,7 +131,7 @@ namespace GaussSeidelMethod
             catch (FormatException fe)
             {
                 Console.WriteLine($"\n{fe.Message}");
-                clearContinue();
+                ClearContinue();
                 Main();
             }
 
@@ -144,10 +144,10 @@ namespace GaussSeidelMethod
 
 
             //check if valid (diagonally dominant) 
-            if (isDiagonallyDominant(augMatrix))
+            if (IsDiagonallyDominant(augMatrix))
             {
                 Attention("Valid for Gauss-Seidel Method!");
-                clearContinue();
+                ClearContinue();
             }
             else
             {
