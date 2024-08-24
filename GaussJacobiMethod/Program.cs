@@ -5,7 +5,7 @@ namespace GaussSeidelMethod
 {
     class Program
     {
-
+        //interface-related methods
         private static void TitleScreen(string title)
         {
             const int charLength = 80;
@@ -16,6 +16,15 @@ namespace GaussSeidelMethod
             Console.WriteLine($"{repeatedChar}\n");
         }
 
+        private static void clearContinue()
+        {
+            Console.Write("Press ENTER to continue");
+            Console.Clear();
+        }
+
+
+
+        //iteration methods
         private static void DisplayAugArray()
         {
             string[,] indexNumRef = { {"a11", "a12", "a13", "b1"},
@@ -45,11 +54,25 @@ namespace GaussSeidelMethod
             Console.WriteLine(sb.ToString());
         }
 
-        private static void clearContinue()
+        //NOTE: Uses strictly diagonal dominance when checking
+        private static bool isDiagonallyDominant(double[,] array)
         {
-            Console.Write("Press ENTER to continue");
-            Console.Clear();
+            double nonDiagSum = 0;
+
+            for (int i = 0; i < array.GetLength(0); i++)
+            {
+                for (int j = 0; j < array.GetLength(1) - 1; j++)
+                {
+                    if (i != j) nonDiagSum += Math.Abs(array[i, j]);
+                }
+
+                if (!(Math.Abs(array[i, i]) > nonDiagSum)) return false;
+                nonDiagSum = 0; //reset
+            }
+
+            return true;
         }
+        
 
         //private static double roundNPlaces(double number, int numPlaces)
         //{
@@ -85,7 +108,7 @@ namespace GaussSeidelMethod
 
                 }
 
-                Console.WriteLine("******************");
+                if (row != augMatrix.GetLength(0)) Console.WriteLine("******************");
             }
 
             //first iteration value
@@ -94,15 +117,22 @@ namespace GaussSeidelMethod
 
             int iteration = 1;
 
+            Console.WriteLine();
+
+
             //check if valid (diagonally dominant) 
-            if ((Math.Abs(augMatrix[0, 0]) > (Math.Abs(augMatrix[0, 1]) + Math.Abs(augMatrix[0, 2])))
-                && (Math.Abs(augMatrix[1, 1]) > (Math.Abs(augMatrix[1, 0]) + Math.Abs(augMatrix[1, 2])))
-                && (Math.Abs(augMatrix[2, 2]) > (Math.Abs(augMatrix[2, 0]) + Math.Abs(augMatrix[2, 1]))))
+            if (isDiagonallyDominant(augMatrix))
             {
                 Console.WriteLine("\nValid for Gauss-Seidel Method!\n\n");
                 clearContinue();
             }
-            else throw new Exception();
+            else
+            {
+                Console.WriteLine("This system of equations can't be solved!");
+                Console.Write("Want to input a different matrix? Press ENTER/any key to continue, or press Q/q to quit. ");
+
+            }
+                
 
             
 
