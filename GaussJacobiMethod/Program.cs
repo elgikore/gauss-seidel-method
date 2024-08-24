@@ -106,15 +106,17 @@ namespace GaussSeidelMethod
             byte rounding = 255;
 
 
-            //Assignment
+            //title screen
             TitleScreen("Gauss-Seidel Iteration Method");
             DisplayAugArray();
             Console.WriteLine("Calculates x1, x2, and x3 using the iterative method, rather than the\nelimination method.\n");
             Console.WriteLine("IMPORTANT: Must be a diagonally dominant matrix in order to converge to the\ntrue value.\n");
-            Console.WriteLine("You can also specify the number of decimal places, e.g. 0 for whole number, 3 for\nthree decimal places, or 255 for no rounding.");
+            Console.WriteLine("You can also specify the number of decimal places, e.g. 0 for whole number, 3\nfor three decimal places, or 255 for no rounding.");
 
             Console.WriteLine(new string('-', CHAR_LENGTH));
 
+
+            //sepecify decimal places
             try
             {
                 Console.Write("\nSpecify the number of decimal places: ");
@@ -133,6 +135,8 @@ namespace GaussSeidelMethod
                 Main();
             }
 
+
+            //assignment
             try
             {
                 for (int row = 0; row < augMatrix.GetLength(0); row++)
@@ -215,9 +219,7 @@ namespace GaussSeidelMethod
                 //else assign new values to old values
                 else
                 {
-                    oldValues[0] = newValues[0];
-                    oldValues[1] = newValues[1];
-                    oldValues[2] = newValues[2];
+                    for (int i = 0; i < oldValues.Length; i++) oldValues[i] = newValues[i];
                 }
 
                 iteration++;
