@@ -6,27 +6,28 @@ namespace GaussSeidelMethod
 
     class Program
     {
+        private const int CHAR_LENGTH = 80;
+
         //interface-related methods
         private static void TitleScreen(string title)
         {
-            const int charLength = 80;
-            string repeatedChar = new string('=', charLength);
+            
+            string repeatedChar = new string('=', CHAR_LENGTH);
 
             Console.WriteLine(repeatedChar);
-            Console.WriteLine($"{title, charLength}");
+            Console.WriteLine($"{title, CHAR_LENGTH}");
             Console.WriteLine($"{repeatedChar}\n");
         }
 
         private static void Attention(string title)
         {
-            const int charLength = 80;
-            string repeatedChar = new string('*', charLength);
+            string repeatedChar = new string('*', CHAR_LENGTH);
 
-            int spaces = charLength - title.Length;
+            int spaces = CHAR_LENGTH - title.Length;
             int padLeft = spaces / 2 + title.Length;
 
             Console.WriteLine(repeatedChar);
-            Console.WriteLine(title.PadLeft(padLeft).PadRight(charLength));
+            Console.WriteLine(title.PadLeft(padLeft).PadRight(CHAR_LENGTH));
             Console.WriteLine($"{repeatedChar}\n");
         }
 
@@ -104,26 +105,34 @@ namespace GaussSeidelMethod
             DisplayAugArray();
             Console.WriteLine("Calculates x1, x2, and x3 using the iterative method, rather than the\nelimination method.\n");
             Console.WriteLine("IMPORTANT: Must be a diagonally dominant matrix in order to converge to the\ntrue value.\n");
-            Console.WriteLine("NOTE: Accurate to 3 decimal places.\n");
+            Console.WriteLine("NOTE: Accurate to 3 decimal places.");
+            Console.WriteLine(new string('-', CHAR_LENGTH));
 
-            for (int row = 0; row < augMatrix.GetLength(0); row++)
+            try
             {
-                for (int col = 0; col < augMatrix.GetLength(1); col++)
+                for (int row = 0; row < augMatrix.GetLength(0); row++)
                 {
-                    if (col == (augMatrix.GetLength(1) - 1))
+                    Console.WriteLine($"\nRow {row + 1}");
+                    for (int col = 0; col < augMatrix.GetLength(1); col++)
                     {
-                        Console.Write($"Input b{row + 1}: ");
-                        augMatrix[row, col] = Convert.ToDouble(Console.ReadLine());
+                        if (col == (augMatrix.GetLength(1) - 1))
+                        {
+                            Console.Write($"Input b{row + 1}: ");
+                            augMatrix[row, col] = Convert.ToDouble(Console.ReadLine());
+                        }
+                        else
+                        {
+                            Console.Write($"Input a{row + 1}{col + 1}: ");
+                            augMatrix[row, col] = Convert.ToDouble(Console.ReadLine());
+                        }
                     }
-                    else
-                    {
-                        Console.Write($"Input a{row + 1}{col + 1}: ");
-                        augMatrix[row, col] = Convert.ToDouble(Console.ReadLine());
-                    }
-
                 }
-
-                if (row != (augMatrix.GetLength(0) - 1)) Console.WriteLine("******************");
+            }
+            catch (FormatException fe)
+            {
+                Console.WriteLine($"\n{fe.Message}");
+                clearContinue();
+                Main();
             }
 
             //first iteration value
@@ -145,7 +154,7 @@ namespace GaussSeidelMethod
                 Console.Clear();
                 TitleScreen("Gauss-Seidel Iteration Method");
                 Console.WriteLine("This system of equations can't be solved!");
-                Console.Write("Want to input a different matrix? Press ENTER/any key to continue, or press Q/q to quit. ");
+                Console.Write("Want to input a different matrix? Press ENTER/any key to continue, or press\nQ/q to quit. ");
 
                 switch ((char) Console.ReadKey().Key)
                 {
