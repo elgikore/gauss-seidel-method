@@ -1,28 +1,65 @@
 ﻿using System;
+using System.Text;
 
 namespace GaussSeidelMethod
 {
     class Program
     {
-        static void TitleScreen(string title)
+
+        private static void TitleScreen(string title)
         {
-            Console.WriteLine("----------------------------------");
+            string repeatedChar = new string('=', 40);
+
+            Console.WriteLine(repeatedChar);
             Console.WriteLine(title);
-            Console.WriteLine("----------------------------------\n");
+            Console.WriteLine($"{repeatedChar}\n");
         }
+
+        private static void DisplayAugArray()
+        {
+            string[,] indexNumRef = { {"a11", "a12", "a13", "b1"},
+                                      {"a21", "a22", "a23", "b2"},
+                                      {"a31", "a32", "a33", "b3"}
+            };
+
+            StringBuilder sb = new StringBuilder();
+
+            for (int row = 0; row < indexNumRef.GetLength(0); row++)
+            {
+                for (int col = 0; col < indexNumRef.GetLength(1); col++)
+                {
+                    if (col == 0) sb.Append($"[{indexNumRef[row, col]}, ");
+                    else if (col == (indexNumRef.GetLength(1) - 1)) sb.Append($"| {indexNumRef[row, col]}]\n");
+                    else if (col == (indexNumRef.GetLength(1) - 2)) sb.Append($"{indexNumRef[row, col]} ");
+                    else sb.Append($"{indexNumRef[row, col]}, ");
+                }
+            }
+
+            Console.WriteLine(sb.ToString());
+        }
+
+        //private static double roundNPlaces(double number, int numPlaces)
+        //{
+        //    return Math.Round(number, numPlaces, MidpointRounding.AwayFromZero);
+        //}
 
         static void Main()
         {
-            TitleScreen("Gauss-Seidel Iteration Method");
-
             double[,] augMatrix = new double[3, 4];
 
+
             //Assignment
+            TitleScreen("Gauss-Seidel Iteration Method");
+            DisplayAugArray();
+            Console.WriteLine("Calculates x1, x2, and x3 using the iterative method, rather than the elimination method.");
+            Console.WriteLine("IMPORTANT: Must be a diagonally dominant matrix in order to converge to the true value");
+            Console.WriteLine("NOTE: Accurate to 3 decimal places");
+
             for (int row = 0; row < augMatrix.GetLength(0); row++)
             {
                 for (int col = 0; col < augMatrix.GetLength(1); col++)
                 {
-                    if (col == 3)
+                    if (col == (augMatrix.GetLength(1) - 1))
                     {
                         Console.Write($"Input b{row + 1}: ");
                         augMatrix[row, col] = Convert.ToDouble(Console.ReadLine());
@@ -35,9 +72,10 @@ namespace GaussSeidelMethod
 
                 }
 
-                Console.WriteLine();
-                Console.Clear();
+                Console.WriteLine("******************");
             }
+
+            Console.Clear();
 
             //first iteration value
             double[] oldValues = new double[3];
@@ -45,8 +83,7 @@ namespace GaussSeidelMethod
 
             int iteration = 1;
 
-            //check if valid
-
+            //check if valid (diagonally dominant) 
             if ((Math.Abs(augMatrix[0, 0]) > (Math.Abs(augMatrix[0, 1]) + Math.Abs(augMatrix[0, 2])))
                 && (Math.Abs(augMatrix[1, 1]) > (Math.Abs(augMatrix[1, 0]) + Math.Abs(augMatrix[1, 2])))
                 && (Math.Abs(augMatrix[2, 2]) > (Math.Abs(augMatrix[2, 0]) + Math.Abs(augMatrix[2, 1]))))
