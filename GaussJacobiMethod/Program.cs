@@ -89,12 +89,14 @@ namespace GaussSeidelMethod
 
             return true;
         }
-        
 
-        //private static double roundNPlaces(double number, int numPlaces)
-        //{
-        //    return Math.Round(number, numPlaces, MidpointRounding.AwayFromZero);
-        //}
+
+        private static double RoundNPlaces(double number, int? numPlaces)
+        {
+            if (numPlaces == null) return number;
+
+            return Math.Round(number, (int) numPlaces, MidpointRounding.AwayFromZero);
+        }
 
 
 
