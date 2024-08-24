@@ -6,7 +6,7 @@ It is a method used in solving systems of equations iteratively, rather than usi
 even to the largest matrices, at the cost of precision because the $x$ values are an approximation.
 
 Gauss-Seidel and Gauss-Jacobi are very similar in execution, but the feature that sets them both apart is that the former's $x$ values are modified as soon as the previous
-value is evaluated (i.e. after evaluating $x_1$, the value is used as part of calculating $x_2$ and so on, leading to faster convergence. What's common for them however,
+value is evaluated (i.e. after evaluating $x_1$, the value is used as part of calculating $x_2$ and so on), leading to faster convergence. What's common for them however,
 is that you need a (strictly) diagonally dominant matrix in order for it to work — or else you'll be stuck in an infinite loop. 
 
 For a 3x3 augmented matrix, where the coefficients ($a$'s) of the 3x3 matrix are on the left side and the resultant vector $B$ (represented by $b$'s) on the right side,<br><br>
