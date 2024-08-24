@@ -33,8 +33,9 @@ A 3x3 matrix is said to be (strictly) diagonally dominant if it satisfies all th
 # How to install
 1. Make sure you have [.NET Core 3.1](https://dotnet.microsoft.com/en-us/download/dotnet/3.1) or higher (since it uses C# 8.0).
 2. Make sure you also have [ConsoleTables](https://github.com/khalidabuhakmeh/ConsoleTables). You can download it from the NuGet package manager.
-3. Open your favorite code editor of your choice (Visual Studio is more recommended than VS Code)
-4. Open the solution file and then run (Visual Studio) or open the folder of the project and then run the Program.cs file (VS Code and other code editors)
+3. Click the latest version on the Releases section and download the source code. Alternatively, click the green code button and download as a ZIP (or you can clone it).
+4. Open your favorite code editor of your choice (Visual Studio is more recommended than VS Code)
+5. Open the solution file and then run (Visual Studio) or open the folder of the project and then run the Program.cs file (VS Code and other code editors)
    * You can also run it from the terminal but make sure you use Roslyn as the [compiler](https://stackoverflow.com/questions/31875825/how-to-run-roslyn-instead-csc-exe-from-command-line).
-5. Enjoy!
+6. Enjoy!
 
