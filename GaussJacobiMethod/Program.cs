@@ -8,10 +8,11 @@ namespace GaussSeidelMethod
 
         private static void TitleScreen(string title)
         {
-            string repeatedChar = new string('=', 40);
+            const int charLength = 80;
+            string repeatedChar = new string('=', charLength);
 
             Console.WriteLine(repeatedChar);
-            Console.WriteLine(title);
+            Console.WriteLine($"{title,charLength}");
             Console.WriteLine($"{repeatedChar}\n");
         }
 
@@ -21,21 +22,33 @@ namespace GaussSeidelMethod
                                       {"a21", "a22", "a23", "b2"},
                                       {"a31", "a32", "a33", "b3"}
             };
+            
+            int colLength = indexNumRef.GetLength(1);
+            int rowLength = indexNumRef.GetLength(0);
 
             StringBuilder sb = new StringBuilder();
+            
 
-            for (int row = 0; row < indexNumRef.GetLength(0); row++)
+            for (int row = 0; row < rowLength; row++)
             {
-                for (int col = 0; col < indexNumRef.GetLength(1); col++)
+                for (int col = 0; col < colLength; col++)
                 {
-                    if (col == 0) sb.Append($"[{indexNumRef[row, col]}, ");
-                    else if (col == (indexNumRef.GetLength(1) - 1)) sb.Append($"| {indexNumRef[row, col]}]\n");
-                    else if (col == (indexNumRef.GetLength(1) - 2)) sb.Append($"{indexNumRef[row, col]} ");
-                    else sb.Append($"{indexNumRef[row, col]}, ");
+                    string index = indexNumRef[row, col];
+
+                    if (col == 0) sb.Append($"[{index}, ");
+                    else if (col == (colLength - 1)) sb.Append($"| {index}]\n");
+                    else if (col == (colLength - 2)) sb.Append($"{index} ");
+                    else sb.Append($"{index}, ");
                 }
             }
 
             Console.WriteLine(sb.ToString());
+        }
+
+        private static void clearContinue()
+        {
+            Console.Write("Press ENTER to continue");
+            Console.Clear();
         }
 
         //private static double roundNPlaces(double number, int numPlaces)
@@ -51,9 +64,9 @@ namespace GaussSeidelMethod
             //Assignment
             TitleScreen("Gauss-Seidel Iteration Method");
             DisplayAugArray();
-            Console.WriteLine("Calculates x1, x2, and x3 using the iterative method, rather than the elimination method.");
-            Console.WriteLine("IMPORTANT: Must be a diagonally dominant matrix in order to converge to the true value");
-            Console.WriteLine("NOTE: Accurate to 3 decimal places");
+            Console.WriteLine("Calculates x1, x2, and x3 using the iterative method, rather than the\nelimination method.\n");
+            Console.WriteLine("IMPORTANT: Must be a diagonally dominant matrix in order to converge to the\ntrue value.\n");
+            Console.WriteLine("NOTE: Accurate to 3 decimal places.\n");
 
             for (int row = 0; row < augMatrix.GetLength(0); row++)
             {
@@ -75,8 +88,6 @@ namespace GaussSeidelMethod
                 Console.WriteLine("******************");
             }
 
-            Console.Clear();
-
             //first iteration value
             double[] oldValues = new double[3];
             double[] newValues = new double[3];
@@ -89,11 +100,15 @@ namespace GaussSeidelMethod
                 && (Math.Abs(augMatrix[2, 2]) > (Math.Abs(augMatrix[2, 0]) + Math.Abs(augMatrix[2, 1]))))
             {
                 Console.WriteLine("\nValid for Gauss-Seidel Method!\n\n");
-                Console.WriteLine("Iteration Open! Start!\n\n");
+                clearContinue();
             }
             else throw new Exception();
 
+            
+
+
             //Iteration Open! Start!
+            TitleScreen("Iteration Open! Start!");
             while (true)
             {
                 Console.WriteLine($"Iteration no. {iteration}");
