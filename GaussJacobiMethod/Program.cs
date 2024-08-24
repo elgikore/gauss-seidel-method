@@ -121,10 +121,11 @@ namespace GaussSeidelMethod
         {
             double[,] augMatrix = new double[3, 4];
             byte rounding = 255;
+            string title = "Gauss-Seidel Iteration Method";
 
 
             //title screen
-            TitleScreen("Gauss-Seidel Iteration Method");
+            TitleScreen(title);
             DisplayAugArray();
             Console.WriteLine("Calculates x1, x2, and x3 using the iterative method, rather than the\nelimination method.\n");
             Console.WriteLine("IMPORTANT: Must be a diagonally dominant matrix in order to converge to the\ntrue value. Only restricted to 3x3 matrices.\n");
@@ -162,6 +163,9 @@ namespace GaussSeidelMethod
 
 
             //assignment
+            Console.Clear();
+            TitleScreen(title);
+            DisplayAugArray();
             try
             {
                 for (int row = 0; row < augMatrix.GetLength(0); row++)
@@ -197,7 +201,7 @@ namespace GaussSeidelMethod
             Console.WriteLine();
 
 
-            //check if valid (diagonally dominant) 
+            //check if valid
             if (IsDiagonallyDominant(augMatrix))
             {
                 Attention("Valid for Gauss-Seidel Method!");
