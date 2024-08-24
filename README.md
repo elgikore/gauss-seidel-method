@@ -1,5 +1,5 @@
 I made this originally as a one-off project as a calculator for my CPE2237 Numerical Methods subject somewhere around January 2022. Only recently I cleaned the code when uploading this.
-<br>
+<br><br>
 
 # What is the Gauss-Seidel Method
 It is a method used in solving systems of equations iteratively, rather than using the usual Gauss-Jordan elimination method. Since it is iterative, it is fast 
@@ -23,6 +23,7 @@ A 3x3 matrix is said to be (strictly) diagonally dominant if it satisfies all th
 ![lagrida_latex_editor (1)](https://github.com/user-attachments/assets/4aae35eb-9312-4168-bfc0-afa846e098dd)
 
 <br>
+
 # How to install
 1. Make sure you have [.NET Core 3.1](https://dotnet.microsoft.com/en-us/download/dotnet/3.1) or higher (since it uses C# 8.0).
 2. Make sure you also have [ConsoleTables](https://github.com/khalidabuhakmeh/ConsoleTables). You can download it the from NuGet package manager.
