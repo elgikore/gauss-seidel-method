@@ -1,4 +1,4 @@
-I made this one-off project as a calculator for my CPE2237 Numerical Methods subject.
+I made this originally one-off project as a calculator for my CPE2237 Numerical Methods subject somewhere around January 2022. Only recently I cleaned the code when uploading this.
 
 # What is the Gauss-Seidel Method
 It is a method used in solving systems of equations iteratively, rather than using the usual Gauss-Jordan elimination method. Since it is iterative, it is fast 
