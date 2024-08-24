@@ -1,82 +1,208 @@
-﻿using System;
+﻿using ConsoleTables;
+using System;
+using System.Text;
 
 namespace GaussSeidelMethod
-{
+{ 
+
     class Program
     {
-        static void Main(string[] args)
-        {
-            Console.WriteLine("----------------------------------");
-            Console.WriteLine("Gauss-Seidel Iteration Method");
-            Console.WriteLine("----------------------------------\n");
+        private const int CHAR_LENGTH = 80;
 
+        //interface-related methods
+        private static void TitleScreen(string title)
+        {
+            
+            string repeatedChar = new string('=', CHAR_LENGTH);
+
+            Console.WriteLine(repeatedChar);
+            Console.WriteLine($"{title, CHAR_LENGTH}");
+            Console.WriteLine($"{repeatedChar}\n");
+        }
+
+        private static void Attention(string title)
+        {
+            string repeatedChar = new string('*', CHAR_LENGTH);
+
+            int spaces = CHAR_LENGTH - title.Length;
+            int padLeft = spaces / 2 + title.Length;
+
+            Console.WriteLine(repeatedChar);
+            Console.WriteLine(title.PadLeft(padLeft).PadRight(CHAR_LENGTH));
+            Console.WriteLine($"{repeatedChar}\n");
+        }
+
+        private static void ClearContinue()
+        {
+            Console.Write("Press ENTER to continue. ");
+            Console.ReadKey();
+            Console.Clear();
+        }
+
+
+
+        //iteration methods
+        private static void DisplayAugArray()
+        {
+            string[,] indexNumRef = { {"a11", "a12", "a13", "b1"},
+                                      {"a21", "a22", "a23", "b2"},
+                                      {"a31", "a32", "a33", "b3"}
+            };
+            
+            int colLength = indexNumRef.GetLength(1);
+            int rowLength = indexNumRef.GetLength(0);
+
+            StringBuilder sb = new StringBuilder();
+            
+
+            for (int row = 0; row < rowLength; row++)
+            {
+                for (int col = 0; col < colLength; col++)
+                {
+                    string index = indexNumRef[row, col];
+
+                    if (col == 0) sb.Append($"[{index}, ");
+                    else if (col == (colLength - 1)) sb.Append($"| {index}]\n");
+                    else if (col == (colLength - 2)) sb.Append($"{index} ");
+                    else sb.Append($"{index}, ");
+                }
+            }
+
+            Console.WriteLine(sb.ToString());
+        }
+
+        //NOTE: Uses strictly diagonal dominance when checking
+        private static bool IsDiagonallyDominant(double[,] array)
+        {
+            double nonDiagSum = 0;
+
+            for (int i = 0; i < array.GetLength(0); i++)
+            {
+                for (int j = 0; j < array.GetLength(1) - 1; j++)
+                {
+                    if (i != j) nonDiagSum += Math.Abs(array[i, j]);
+                }
+
+                if (!(Math.Abs(array[i, i]) > nonDiagSum)) return false;
+                nonDiagSum = 0; //reset
+            }
+
+            return true;
+        }
+        
+
+        //private static double roundNPlaces(double number, int numPlaces)
+        //{
+        //    return Math.Round(number, numPlaces, MidpointRounding.AwayFromZero);
+        //}
+
+
+
+        static void Main()
+        {
             double[,] augMatrix = new double[3, 4];
 
 
+            //Assignment
+            TitleScreen("Gauss-Seidel Iteration Method");
+            DisplayAugArray();
+            Console.WriteLine("Calculates x1, x2, and x3 using the iterative method, rather than the\nelimination method.\n");
+            Console.WriteLine("IMPORTANT: Must be a diagonally dominant matrix in order to converge to the\ntrue value.\n");
+            Console.WriteLine("NOTE: Accurate to 3 decimal places.");
+            Console.WriteLine(new string('-', CHAR_LENGTH));
 
-            //for x1
-            for (int row = 0; row < augMatrix.GetLength(0); row++)
+            try
             {
-                for (int col = 0; col < augMatrix.GetLength(1); col++)
+                for (int row = 0; row < augMatrix.GetLength(0); row++)
                 {
-                    if (col == 3)
+                    Console.WriteLine($"\nRow {row + 1}");
+                    for (int col = 0; col < augMatrix.GetLength(1); col++)
                     {
-                        Console.Write($"Input b{row + 1}: ");
-                        augMatrix[row, col] = Convert.ToDouble(Console.ReadLine());
+                        if (col == (augMatrix.GetLength(1) - 1))
+                        {
+                            Console.Write($"Input b{row + 1}:\t");
+                            augMatrix[row, col] = Convert.ToDouble(Console.ReadLine());
+                        }
+                        else
+                        {
+                            Console.Write($"Input a{row + 1}{col + 1}:\t");
+                            augMatrix[row, col] = Convert.ToDouble(Console.ReadLine());
+                        }
                     }
-                    else
-                    {
-                        Console.Write($"Input a{row + 1}{col + 1}: ");
-                        augMatrix[row, col] = Convert.ToDouble(Console.ReadLine());
-                    }
-                    
                 }
-
-                Console.WriteLine();
-                Console.Clear();
+            }
+            catch (FormatException fe)
+            {
+                Console.WriteLine($"\n{fe.Message}");
+                ClearContinue();
+                Main();
             }
 
             //first iteration value
-            double x1old = 0;
-            double x2old = 0; 
-            double x3old = 0;
+            double[] oldValues = new double[3];
+            double[] newValues = new double[3];
             int iteration = 1;
 
-            //check if valid
-            
-            if ((Math.Abs(augMatrix[0, 0]) > (Math.Abs(augMatrix[0, 1]) + Math.Abs(augMatrix[0, 2]))) 
-                && (Math.Abs(augMatrix[1, 1]) > (Math.Abs(augMatrix[1, 0]) + Math.Abs(augMatrix[1, 2]))) 
-                && (Math.Abs(augMatrix[2, 2]) > (Math.Abs(augMatrix[2, 0]) + Math.Abs(augMatrix[2, 1]))))
-            {
-                Console.WriteLine("\nValid for Gauss-Seidel Method!\n\n");
-                Console.WriteLine("Iteration Open! Start!\n\n");
-            }
-            else throw new Exception("Invalid for Gauss-Seidel Method!");
+            Console.WriteLine();
 
+
+            //check if valid (diagonally dominant) 
+            if (IsDiagonallyDominant(augMatrix))
+            {
+                Attention("Valid for Gauss-Seidel Method!");
+                ClearContinue();
+            }
+            else
+            {
+                Console.Clear();
+                TitleScreen("Gauss-Seidel Iteration Method");
+                Console.WriteLine("This system of equations can't be solved!");
+                Console.Write("Want to input a different matrix? Press ENTER/any key to continue, or press\nQ/q to quit. ");
+
+                switch ((char) Console.ReadKey().Key)
+                {
+                    case 'Q':
+                        Console.WriteLine("\n\nSee you later!");
+                        Environment.Exit(0);
+                        break;
+                    default:
+                        Console.Clear();
+                        Main();
+                        break;
+                }
+            }
+                
+
+            
             //Iteration Open! Start!
+            TitleScreen("Iteration Open! Start!");
+
+            ConsoleTable table = new ConsoleTable("Iteration No.", "x1", "x2", "x3");
+
             while (true)
             {
-                Console.WriteLine($"Iteration no. {iteration}");
-                double x1new = Math.Round((1 / augMatrix[0, 0]) * (augMatrix[0, 3] - (augMatrix[0, 1] * x2old) - (augMatrix[0, 2] * x3old)), 3, MidpointRounding.AwayFromZero);
-                double x2new = Math.Round((1 / augMatrix[1, 1]) * (augMatrix[1, 3] - (augMatrix[1, 0] * x1new) - (augMatrix[1, 2] * x3old)), 3, MidpointRounding.AwayFromZero);
-                double x3new = Math.Round((1 / augMatrix[2, 2]) * (augMatrix[2, 3] - (augMatrix[2, 0] * x1new) - (augMatrix[2, 1] * x2new)), 3, MidpointRounding.AwayFromZero);
+                newValues[0] = Math.Round((1 / augMatrix[0, 0]) * (augMatrix[0, 3] - (augMatrix[0, 1] * oldValues[1]) - (augMatrix[0, 2] * oldValues[2])), 3, MidpointRounding.AwayFromZero);
+                newValues[1] = Math.Round((1 / augMatrix[1, 1]) * (augMatrix[1, 3] - (augMatrix[1, 0] * newValues[0]) - (augMatrix[1, 2] * oldValues[2])), 3, MidpointRounding.AwayFromZero);
+                newValues[2] = Math.Round((1 / augMatrix[2, 2]) * (augMatrix[2, 3] - (augMatrix[2, 0] * newValues[0]) - (augMatrix[2, 1] * newValues[1])), 3, MidpointRounding.AwayFromZero);
 
-                Console.WriteLine($"x1 = {x1new}, x2 = {x2new}, x3 = {x3new}\n\n");
+                table.AddRow(iteration, newValues[0], newValues[1], newValues[2]);
 
                 //if last iteration and latest iteration is the same, stop loop
-                if ((x1old == x1new) && (x2old == x2new) && (x3old == x3new)) break;
+                if ((oldValues[0] == newValues[0]) && (oldValues[1] == newValues[1]) && (oldValues[2] == newValues[2])) break;
                 //else assign new values to old values
                 else
                 {
-                    x1old = x1new;
-                    x2old = x2new;
-                    x3old = x3new;
+                    oldValues[0] = newValues[0];
+                    oldValues[1] = newValues[1];
+                    oldValues[2] = newValues[2];
                 }
 
                 iteration++;
             }
 
-            Console.WriteLine($"\nThe iteration stopped at {iteration}.");
+            Console.WriteLine(table.ToMinimalString());
+
+            Attention($"The iteration stopped at {iteration}.");
             Console.ReadLine();
         }
     }
