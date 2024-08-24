@@ -39,6 +39,23 @@ namespace GaussSeidelMethod
             Console.Clear();
         }
 
+        private static void RepeatAgainPrompt(string message)
+        {
+            Console.Write($"{message} Press ENTER/any key to continue, or press\nQ/q to quit. ");
+
+            switch ((char) Console.ReadKey().Key)
+            {
+                case 'Q':
+                    Console.WriteLine("\n\nSee you later!");
+                    Environment.Exit(0);
+                    break;
+                default:
+                    Console.Clear();
+                    Main();
+                    break;
+            }
+        }
+
 
 
         //iteration methods
@@ -90,7 +107,6 @@ namespace GaussSeidelMethod
             return true;
         }
 
-
         private static double RoundNPlaces(double number, byte numPlaces)
         {
             if (numPlaces == 255) return number; //if the user doesn't want to set any rounding
@@ -104,10 +120,11 @@ namespace GaussSeidelMethod
         {
             double[,] augMatrix = new double[3, 4];
             byte rounding = 255;
+            string title = "Gauss-Seidel Iteration Method";
 
 
             //title screen
-            TitleScreen("Gauss-Seidel Iteration Method");
+            TitleScreen(title);
             DisplayAugArray();
             Console.WriteLine("Calculates x1, x2, and x3 using the iterative method, rather than the\nelimination method.\n");
             Console.WriteLine("IMPORTANT: Must be a diagonally dominant matrix in order to converge to the\ntrue value.\n");
@@ -145,6 +162,9 @@ namespace GaussSeidelMethod
 
 
             //assignment
+            Console.Clear();
+            TitleScreen(title);
+            DisplayAugArray();
             try
             {
                 for (int row = 0; row < augMatrix.GetLength(0); row++)
@@ -191,19 +211,8 @@ namespace GaussSeidelMethod
                 Console.Clear();
                 TitleScreen("Gauss-Seidel Iteration Method");
                 Console.WriteLine("This system of equations can't be solved!");
-                Console.Write("Want to input a different matrix? Press ENTER/any key to continue, or press\nQ/q to quit. ");
 
-                switch ((char) Console.ReadKey().Key)
-                {
-                    case 'Q':
-                        Console.WriteLine("\n\nSee you later!");
-                        Environment.Exit(0);
-                        break;
-                    default:
-                        Console.Clear();
-                        Main();
-                        break;
-                }
+                RepeatAgainPrompt("Want to input a different matrix?");
             }
                 
 
@@ -236,7 +245,8 @@ namespace GaussSeidelMethod
             Console.WriteLine(table.ToMinimalString());
 
             Attention($"The iteration stopped at {iteration}.");
-            Console.ReadLine();
+            
+            RepeatAgainPrompt("Want to calculate a different matrix?");
         }
     }
 }
