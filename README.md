@@ -1,7 +1,10 @@
-I made this originally as a one-off personal project for my CPE2237 Numerical Methods subject somewhere around January 2022, as a simple calculator of this kind and originally up to 3 decimal places accurate. Only recently I cleaned the code when uploading this.
+I made this originally as a one-off personal project for my CPE2237 Numerical Methods subject somewhere around January 2022, as a simple calculator of this kind and originally only up to 3 decimal places accurate. Only recently I cleaned the code when uploading this.
 <br><br>
 
 # What is the Gauss-Seidel Method
+<img src="https://github.com/user-attachments/assets/6bf218c0-84cc-4033-a2df-86eb4744b24c" width=40%>
+<img src="https://github.com/user-attachments/assets/0df94d16-4fb8-49e0-91e8-8382441c44f3" width=58%>
+
 It is a method used in solving systems of equations iteratively, rather than using the usual Gauss-Jordan elimination method. Since it is iterative, it is fast 
 even to the largest matrices, at the cost of precision because the $x$ values are an approximation.
 
