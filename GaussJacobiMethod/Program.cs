@@ -2,7 +2,8 @@
 using System.Text;
 
 namespace GaussSeidelMethod
-{
+{ 
+
     class Program
     {
         //interface-related methods
@@ -12,13 +13,27 @@ namespace GaussSeidelMethod
             string repeatedChar = new string('=', charLength);
 
             Console.WriteLine(repeatedChar);
-            Console.WriteLine($"{title,charLength}");
+            Console.WriteLine($"{title, charLength}");
+            Console.WriteLine($"{repeatedChar}\n");
+        }
+
+        private static void Attention(string title)
+        {
+            const int charLength = 80;
+            string repeatedChar = new string('*', charLength);
+
+            int spaces = charLength - title.Length;
+            int padLeft = spaces / 2 + title.Length;
+
+            Console.WriteLine(repeatedChar);
+            Console.WriteLine(title.PadLeft(padLeft).PadRight(charLength));
             Console.WriteLine($"{repeatedChar}\n");
         }
 
         private static void clearContinue()
         {
-            Console.Write("Press ENTER to continue");
+            Console.Write("Press ENTER to continue. ");
+            Console.ReadKey();
             Console.Clear();
         }
 
@@ -108,13 +123,12 @@ namespace GaussSeidelMethod
 
                 }
 
-                if (row != augMatrix.GetLength(0)) Console.WriteLine("******************");
+                if (row != (augMatrix.GetLength(0) - 1)) Console.WriteLine("******************");
             }
 
             //first iteration value
             double[] oldValues = new double[3];
             double[] newValues = new double[3];
-
             int iteration = 1;
 
             Console.WriteLine();
@@ -123,14 +137,27 @@ namespace GaussSeidelMethod
             //check if valid (diagonally dominant) 
             if (isDiagonallyDominant(augMatrix))
             {
-                Console.WriteLine("\nValid for Gauss-Seidel Method!\n\n");
+                Attention("Valid for Gauss-Seidel Method!");
                 clearContinue();
             }
             else
             {
+                Console.Clear();
+                TitleScreen("Gauss-Seidel Iteration Method");
                 Console.WriteLine("This system of equations can't be solved!");
                 Console.Write("Want to input a different matrix? Press ENTER/any key to continue, or press Q/q to quit. ");
 
+                switch ((char) Console.ReadKey().Key)
+                {
+                    case 'Q':
+                        Console.WriteLine("\n\nSee you later!");
+                        Environment.Exit(0);
+                        break;
+                    default:
+                        Console.Clear();
+                        Main();
+                        break;
+                }
             }
                 
 
