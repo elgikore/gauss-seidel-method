@@ -1,4 +1,4 @@
-I made this originally as a one-off personal project for my CPE2237 Numerical Methods subject somewhere around January 2022, as a calculator. Only recently I cleaned the code when uploading this.
+I made this originally as a one-off personal project for my CPE2237 Numerical Methods subject somewhere around January 2022, as a simple calculator of this kind. Only recently I cleaned the code when uploading this.
 <br><br>
 
 # What is the Gauss-Seidel Method
