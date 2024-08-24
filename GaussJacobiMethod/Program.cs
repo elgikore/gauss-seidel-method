@@ -89,18 +89,21 @@ namespace GaussSeidelMethod
 
             return true;
         }
-        
 
-        //private static double roundNPlaces(double number, int numPlaces)
-        //{
-        //    return Math.Round(number, numPlaces, MidpointRounding.AwayFromZero);
-        //}
+
+        private static double RoundNPlaces(double number, byte numPlaces)
+        {
+            if (numPlaces == 255) return number; //if the user doesn't want to set any rounding
+
+            return Math.Round(number, numPlaces, MidpointRounding.AwayFromZero);
+        }
 
 
 
         static void Main()
         {
             double[,] augMatrix = new double[3, 4];
+            byte rounding = 255;
 
 
             //Assignment
@@ -108,8 +111,27 @@ namespace GaussSeidelMethod
             DisplayAugArray();
             Console.WriteLine("Calculates x1, x2, and x3 using the iterative method, rather than the\nelimination method.\n");
             Console.WriteLine("IMPORTANT: Must be a diagonally dominant matrix in order to converge to the\ntrue value.\n");
-            Console.WriteLine("NOTE: Accurate to 3 decimal places.");
+            Console.WriteLine("You can also specify the number of decimal places, e.g. 0 for whole number, 3 for\nthree decimal places, or 255 for no rounding.");
+
             Console.WriteLine(new string('-', CHAR_LENGTH));
+
+            try
+            {
+                Console.Write("\nSpecify the number of decimal places: ");
+                rounding = Convert.ToByte(Console.ReadLine());
+            }
+            catch (FormatException fe)
+            {
+                Console.WriteLine($"\n{fe.Message}");
+                ClearContinue();
+                Main();
+            }
+            catch (OverflowException oe)
+            {
+                Console.WriteLine($"\nOutside of the allowable range! {oe.Message}");
+                ClearContinue();
+                Main();
+            }
 
             try
             {
@@ -181,9 +203,10 @@ namespace GaussSeidelMethod
 
             while (true)
             {
-                newValues[0] = Math.Round((1 / augMatrix[0, 0]) * (augMatrix[0, 3] - (augMatrix[0, 1] * oldValues[1]) - (augMatrix[0, 2] * oldValues[2])), 3, MidpointRounding.AwayFromZero);
-                newValues[1] = Math.Round((1 / augMatrix[1, 1]) * (augMatrix[1, 3] - (augMatrix[1, 0] * newValues[0]) - (augMatrix[1, 2] * oldValues[2])), 3, MidpointRounding.AwayFromZero);
-                newValues[2] = Math.Round((1 / augMatrix[2, 2]) * (augMatrix[2, 3] - (augMatrix[2, 0] * newValues[0]) - (augMatrix[2, 1] * newValues[1])), 3, MidpointRounding.AwayFromZero);
+                
+                newValues[0] = RoundNPlaces((1 / augMatrix[0, 0]) * (augMatrix[0, 3] - (augMatrix[0, 1] * oldValues[1]) - (augMatrix[0, 2] * oldValues[2])), rounding);
+                newValues[1] = RoundNPlaces((1 / augMatrix[1, 1]) * (augMatrix[1, 3] - (augMatrix[1, 0] * newValues[0]) - (augMatrix[1, 2] * oldValues[2])), rounding);
+                newValues[2] = RoundNPlaces((1 / augMatrix[2, 2]) * (augMatrix[2, 3] - (augMatrix[2, 0] * newValues[0]) - (augMatrix[2, 1] * newValues[1])), rounding);
 
                 table.AddRow(iteration, newValues[0], newValues[1], newValues[2]);
 
